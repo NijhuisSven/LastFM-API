@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Create MongoDB session store
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
-  collection: 'lastfm_sessions',
+  collection: 'sessions',
   expires: 1000 * 60 * 60 * 24 * 30,
 });
 
@@ -29,7 +29,7 @@ store.on('error', function(error) {
   console.error('Session store error:', error);
 });
 
-const authRoutes = require('./routes/auth');
+const spotifyAuthRoutes = require('./routes/spotifyAuth');
 const apiRoutes = require('./routes/api');
 
 const app = express();
@@ -40,39 +40,47 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 30,
-    secure: process.env.NODE_ENV === 'production', 
-    sameSite: 'lax'
-  },
-  store: store,
+  secret: process.env.SESSION_SECRET || 'defaultsecret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: store
 }));
 
+// Set view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use('/auth', authRoutes);
+// Routes
+app.use('/auth', spotifyAuthRoutes);
 app.use('/api', apiRoutes);
 
+// Homepage
 app.get('/', (req, res) => {
   res.render('index', { 
     user: req.session.user || null 
   });
 });
 
+// Dashboard (requires authentication)
 app.get('/dashboard', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/');
   }
   res.render('dashboard', { 
-    user: req.session.user,
-    authCode: req.session.authCode || null
+    user: req.session.user
+  });
+});
+
+// Fullscreen lyrics page (requires authentication)
+app.get('/fullscreen', (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
+  res.render('fullscreen', { 
+    user: req.session.user
   });
 });
 
 app.listen(PORT, () => {
-  log.info(` Server running on port ${PORT}`);
+  log.success(`Server running on http://localhost:${PORT}`);
 });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Last.fm Now Playing</title>
+  <title>LastFM Now Playing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -11,16 +11,38 @@
 </head>
 <body>
   <div class="container">
-    <h1>Last.fm Now Playing</h1>
-    <p>See what you're listening to in real-time</p>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1>🎵 LastFM Now Playing</h1>
+      <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;">
+        See what you're listening to in real-time with synchronized lyrics
+      </p>
+    </div>
     
     <% if(user) { %>
-      <p>Welcome, <%= user.username %>!</p>
-      <a href="/dashboard" class="btn">Go to Dashboard</a>
-      <a href="/auth/logout" class="btn btn-secondary">Logout</a>
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <p style="font-size: 1.1rem; margin-bottom: 1rem;">Welcome back, <strong><%= user.displayName %></strong>!</p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+          <a href="/dashboard" class="btn">🎧 Go to Dashboard</a>
+          <a href="/auth/logout" class="btn btn-secondary">🚪 Logout</a>
+        </div>
+      </div>
     <% } else { %>
-      <a href="/auth/login" class="btn">Login with Last.fm</a>
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="background: var(--dark-secondary); padding: 2rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+          <h2 style="margin-bottom: 1rem;">Get Started</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+            Connect your Spotify account to see your currently playing track with synchronized lyrics
+          </p>
+          <a href="/auth/login" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">
+            🎵 Login with Spotify
+          </a>
+        </div>
+      </div>
     <% } %>
+    
+    <div style="text-align: center; margin-top: 3rem; color: var(--text-secondary);">
+      <p>Powered by Spotify Web API & LRC Lib</p>
+    </div>
   </div>
 </body>
-</html>
+</html> 

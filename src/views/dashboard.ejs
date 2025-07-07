@@ -3,23 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Last.fm Now Playing</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <title>Dashboard | Apple Music Now Playing</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Welcome, <%= user.username %></h1>
-      <a href="/auth/logout" class="btn btn-secondary">Logout</a>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <h1>Now Playing</h1>
+        <% if(user.profileImage) { %>
+          <img src="<%= user.profileImage %>" alt="Profile" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1);">
+        <% } %>
+      </div>
+      <a href="/auth/logout" class="btn btn-secondary">Sign Out</a>
     </header>
     
     <div class="now-playing-container">
-      <h2>Now Playing</h2>
       <div id="now-playing">
         <div class="loading">Loading your music...</div>
+      </div>
+      
+      <div id="lyrics-container" class="lyrics-container" style="display: block;">
+        <h3>Lyrics</h3>
+        <div id="lyrics-display" style="display: block;">
+          <div class="lyrics-loading">Waiting for music to play...</div>
+        </div>
+        <div id="lyrics-controls">
+          <button id="toggle-lyrics" class="btn btn-primary">Show Lyrics</button>
+          <button id="sync-lyrics" class="btn btn-secondary" style="display: none;">Sync with Track</button>
+          <a href="/fullscreen" class="btn btn-success" style="margin-left: 10px;">Fullscreen Lyrics</a>
+        </div>
       </div>
     </div>
     
@@ -27,51 +40,15 @@
       <h3>API Usage</h3>
       <p>You can access your currently playing track via API:</p>
       
-      <% if(authCode) { %>
-        <div class="auth-code-container">
-          <p><strong>Your Auth Code:</strong></p>
-          <pre class="auth-code"><%= authCode %></pre>
-          <button id="regenerate-code" class="btn btn-secondary">Generate New Code</button>
-        </div>
-      <% } %>
-      
       <pre>
-POST /api/now-playing
-Content-Type: application/json
-
-{
-  "authCode": "your_auth_code"
-}
-
-GET /api/now-playing?authCode=your_auth_code
+GET /api/now-playing
+GET /api/now-playing-with-lyrics
+GET /api/lyrics?artist=Artist&track=Track
       </pre>
+      
+      <p><strong>Note:</strong> API endpoints require authentication via session.</p>
     </div>
   </div>
-  
-  <script>
-    document.getElementById('regenerate-code')?.addEventListener('click', async () => {
-      try {
-        const response = await fetch('/auth/generate-code', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        const data = await response.json();
-        
-        if (data.success && data.authCode) {
-          document.querySelector('.auth-code').textContent = data.authCode;
-          alert('New auth code generated successfully!');
-        } else {
-          alert('Failed to generate new auth code.');
-        }
-      } catch (error) {
-        console.error('Error generating auth code:', error);
-        alert('Error generating auth code. Please try again.');
-      }
-    });
-  </script>
   
   <script src="/js/main.js"></script>
 </body>

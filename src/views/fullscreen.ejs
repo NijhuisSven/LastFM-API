@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fullscreen Lyrics | LastFM Now Playing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/fullscreen.css">
+</head>
+<body>
+  <div class="fullscreen-container">
+    <!-- Album cover background -->
+    <div class="album-background" id="album-background"></div>
+    
+
+    
+        <!-- Header with track info -->
+    <header class="track-header">
+      <div class="track-info">
+        <h1 class="track-title" id="track-title">Loading...</h1>
+        <p class="track-artist" id="track-artist">Loading...</p>
+      </div>
+    </header>
+    
+    <!-- Exit button -->
+    <button id="exit-fullscreen" class="exit-btn">✕</button>
+    
+    <!-- Main lyrics display -->
+    <main class="lyrics-main">
+      <div class="lyrics-container">
+        <div class="lyrics-line previous" id="previous-lyric">
+          <span class="lyric-text"></span>
+        </div>
+        <div class="lyrics-line current" id="current-lyric">
+          <span class="lyric-text">Loading lyrics...</span>
+        </div>
+        <div class="lyrics-line next" id="next-lyric">
+          <span class="lyric-text"></span>
+        </div>
+      </div>
+      
+      <!-- Progress bar -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="time-display">
+          <span id="current-time">0:00</span>
+          <span id="total-time">0:00</span>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Sync controls (hidden by default) -->
+    <div class="sync-controls" id="sync-controls">
+      <button id="sync-backward" class="sync-btn" title="Sync Backward (-2s)">⏪</button>
+      <button id="sync-forward" class="sync-btn" title="Sync Forward (+2s)">⏩</button>
+      <button id="sync-reset" class="sync-btn" title="Reset Sync">🔄</button>
+    </div>
+  </div>
+  
+  <script src="/js/fullscreen.js"></script>
+</body>
+</html> 

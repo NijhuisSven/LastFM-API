@@ -1,0 +1,404 @@
+/* Apple Music Fullscreen Lyrics - Exact Replica */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  background: #000000;
+  color: #ffffff;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fullscreen-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #000000;
+  overflow: hidden;
+}
+
+/* Album cover background - Apple Music style */
+.album-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(100px) brightness(0.4) saturate(1.2);
+  transform: scale(1.2);
+  z-index: 0;
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.album-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.4) 100%);
+}
+
+
+
+/* Header - Apple Music Exact Style */
+.track-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 2rem 2rem 2rem;
+  background: transparent;
+}
+
+.track-info {
+  flex: 1;
+  text-align: center;
+}
+
+.track-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.track-artist {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.exit-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(20px);
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.exit-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* Main Lyrics Area - Apple Music Exact */
+.lyrics-main {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.lyrics-container {
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lyrics-line {
+  margin: 2.5rem 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0.2;
+  transform: translateY(20px) scale(0.95);
+  filter: blur(0.5px);
+  position: relative;
+  max-width: 100%;
+}
+
+.lyrics-line.previous {
+  opacity: 0.3;
+  transform: translateY(-10px) scale(0.92);
+  filter: blur(0.3px);
+}
+
+.lyrics-line.current {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.lyrics-line.next {
+  opacity: 0.4;
+  transform: translateY(10px) scale(0.98);
+  filter: blur(0.2px);
+}
+
+.lyric-text {
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  color: #ffffff;
+  display: block;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.lyrics-line.current .lyric-text {
+  color: #ffffff;
+  font-weight: 400;
+  text-shadow: 0 3px 25px rgba(0, 0, 0, 0.6);
+  animation: appleMusicLyric 3s ease-in-out infinite;
+}
+
+@keyframes appleMusicLyric {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 3px 25px rgba(0, 0, 0, 0.6);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.01);
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes appleLyricFade {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.01);
+  }
+}
+
+/* Progress Bar - Apple Music Exact */
+.progress-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 3rem;
+  padding: 0 1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 1px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #ffffff;
+  border-radius: 1px;
+  transition: width 0.1s ease-out;
+  width: 0%;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: appleProgressShine 4s ease-in-out infinite;
+}
+
+@keyframes appleProgressShine {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Sync Controls - Apple Music Style */
+.sync-controls {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sync-controls:hover {
+  opacity: 1;
+}
+
+.sync-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(20px);
+}
+
+.sync-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .track-header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .track-title {
+    font-size: 1.8rem;
+  }
+  
+  .track-artist {
+    font-size: 1rem;
+  }
+  
+  .lyric-text {
+    font-size: 2.5rem;
+  }
+  
+  .lyrics-main {
+    padding: 1rem;
+  }
+  
+  .sync-controls {
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .track-title {
+    font-size: 1.5rem;
+  }
+  
+  .lyric-text {
+    font-size: 2rem;
+  }
+  
+  .lyrics-line {
+    margin: 1.5rem 0;
+  }
+}
+
+/* Loading Animation - Apple Music Exact */
+@keyframes appleFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.lyrics-line {
+  animation: appleFadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Apple Music style word-by-word animation */
+.lyrics-line.current .lyric-text {
+  animation: appleMusicLyric 3s ease-in-out infinite, appleWordReveal 0.6s ease-out;
+}
+
+@keyframes appleWordReveal {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Subtle pulse for active lyrics */
+@keyframes appleSubtlePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.005);
+  }
+}
+
+.lyrics-line.current .lyric-text {
+  animation: appleSubtlePulse 4s ease-in-out infinite;
+} 
